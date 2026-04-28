@@ -10,6 +10,15 @@
 !.yarn/releases
 !.yarn/versions
 
+# Python
+/backend/venv
+/backend/.venv
+/backend/env
+/backend/__pycache__
+/backend/*.pyc
+/backend/.pytest_cache
+/backend/uploads/
+
 # testing
 /coverage
 
@@ -38,4 +47,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+next-env.d.ts
 next-env.d.ts

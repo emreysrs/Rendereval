@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Next.js Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:5000
+    depends_on:
+      - backend
+    volumes:
+      - ./app:/app/app
+      - ./public:/app/public
+
+  # Python Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_PORT=5000
+      - FLASK_DEBUG=False
+      - FLASK_ENV=production
+    volumes:
+      - ./backend:/app
+      - ./backend/uploads:/app/uploads
+    command: python app.py
+
+volumes:
+  backend_uploads:
