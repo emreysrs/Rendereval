@@ -350,7 +350,7 @@ function AnalysisContent() {
               endFrame,
               renderDeadline,
             }));
-            router.push(`/analyzing?type=${projectType}`);
+            router.push(`/results?type=${projectType}`);
           }}
           style={{
             padding: '10px 24px',
