@@ -29,7 +29,7 @@ export default function RootLayout({
             justifyContent: 'space-between',
             padding: '12px 24px',
             background: '#000000',
-            borderBottom: '1px solid #ffffff',
+            borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
             position: 'sticky',
             top: 0,
             zIndex: 100,

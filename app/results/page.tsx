@@ -86,7 +86,7 @@ function ResultsContent() {
   return (
     <div style={{ minHeight: 'calc(100vh - 53px)', background: '#1F1F1E', display: 'flex', flexDirection: 'column' }}>
       {/* Breadcrumb */}
-      <div style={{ padding: '10px 24px', borderBottom: '1px solid #ffffff', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
+      <div style={{ padding: '10px 24px', borderBottom: '1px solid rgba(255, 255, 255, 0.3)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px' }}>
         <span style={{ color: '#6b7280' }}>{projectType.toUpperCase()}</span>
         <span style={{ color: '#3a3a50' }}>›</span>
         <span style={{ color: '#6b7280' }}>{data.summary.shotName || 'Shot_F16_v01'}</span>

@@ -257,7 +257,7 @@ function AnalysisContent() {
           display: 'flex',
           alignItems: 'center',
           gap: '0',
-          borderBottom: '1px solid #ffffff',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
           padding: '0 24px',
           background: '#1F1F1E',
           overflowX: 'auto',

@@ -103,8 +103,8 @@ function ProjectContent() {
         border: dragTarget === zone
           ? '2px solid #3b82f6'
           : isMain
-            ? '2px dashed #4a4a60'
-            : '2px dashed #3a3a50',
+            ? '2px dashed rgba(255, 255, 255, 0.3)'
+            : '2px dashed rgba(255, 255, 255, 0.3)',
         borderRadius: '12px',
         background: dragTarget === zone ? 'rgba(59,130,246,0.08)' : '#1F1F1E',
         display: 'flex',
@@ -178,7 +178,7 @@ function ProjectContent() {
             style={{
               padding: '10px 24px',
               borderRadius: '8px',
-              border: '1px solid #3a3a50',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               background: 'transparent',
               color: '#9ca3af',
               fontSize: '13px',
@@ -220,7 +220,7 @@ function ProjectContent() {
       <div
         style={{
           width: '280px',
-          borderLeft: '1px solid #2a2a3e',
+          borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
           padding: '24px',
           background: '#393D3D',
           display: 'flex',
@@ -242,7 +242,7 @@ function ProjectContent() {
               width: '100%',
               padding: '8px 12px',
               borderRadius: '6px',
-              border: '1px solid #3a3a50',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               background: '#1F1F1E',
               color: '#e0e0e0',
               fontSize: '13px',
@@ -261,7 +261,7 @@ function ProjectContent() {
               width: '100%',
               padding: '8px 12px',
               borderRadius: '6px',
-              border: '1px solid #3a3a50',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               background: '#1F1F1E',
               color: '#e0e0e0',
               fontSize: '13px',
@@ -281,7 +281,7 @@ function ProjectContent() {
               width: '100%',
               padding: '8px 12px',
               borderRadius: '6px',
-              border: '1px solid #3a3a50',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               background: '#1F1F1E',
               color: '#e0e0e0',
               fontSize: '13px',
@@ -301,7 +301,7 @@ function ProjectContent() {
               width: '100%',
               padding: '8px 12px',
               borderRadius: '6px',
-              border: '1px solid #3a3a50',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               background: '#1F1F1E',
               color: '#e0e0e0',
               fontSize: '13px',

@@ -66,7 +66,7 @@ function ReportContent() {
   return (
     <div style={{ minHeight: 'calc(100vh - 53px)', background: '#1F1F1E', display: 'flex', flexDirection: 'column' }}>
       {/* Status Tabs */}
-      <div style={{ display: 'flex', borderBottom: '1px solid #ffffff', background: '#1e1e32' }}>
+      <div style={{ display: 'flex', borderBottom: '1px solid rgba(255, 255, 255, 0.3)', background: '#1e1e32' }}>
         {statusTabs.map((tab, i) => (
           <button
             key={tab.label}
@@ -120,7 +120,7 @@ function ReportContent() {
                     ['Shot name', summary.shotName],
                     ['Total Frames', summary.estimatedFrames],
                   ].map(([label, value]) => (
-                    <tr key={label} style={{ borderBottom: '1px solid #ffffff' }}>
+                    <tr key={label} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.3)' }}>
                       <td style={{ padding: '10px 16px', color: '#6b7280', fontSize: '12px', width: '140px' }}>{label}</td>
                       <td style={{ padding: '10px 16px', color: '#e0e0e0', fontSize: '12px' }}>{value}</td>
                     </tr>
