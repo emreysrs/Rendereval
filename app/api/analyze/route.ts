@@ -2,36 +2,35 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Get backend URL from environment
-    const backendUrl = process.env.BACKEND_API_URL || 'http://localhost:5000';
+    // Get backend URL from environment (production uses NEXT_PUBLIC_BACKEND_URL)
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_API_URL || 'http://localhost:8000';
 
-    // Check if we're using real backend or mock
-    const useBackend = process.env.USE_BACKEND_ANALYSIS === 'true';
+    // Try to use real backend first
+    try {
+      const formData = await request.formData();
+      const type = formData.get('type') || 'vfx';
+      
+      console.log(`[ANALYZE] Attempting to use backend: ${backendUrl}`);
+      
+      // Forward to backend
+      const backendResponse = await fetch(`${backendUrl}/api/analyze`, {
+        method: 'POST',
+        body: formData,
+      });
 
-    if (useBackend) {
-      // Call Python backend for real analysis
-      try {
-        const formData = await request.formData();
-        
-        // Forward to backend
-        const backendResponse = await fetch(`${backendUrl}/api/analyze`, {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!backendResponse.ok) {
-          throw new Error(`Backend error: ${backendResponse.status}`);
-        }
-
-        const result = await backendResponse.json();
-        return NextResponse.json(result);
-      } catch (error) {
-        console.error('Backend analysis failed:', error);
-        // Fallback to mock data if backend fails
+      if (!backendResponse.ok) {
+        throw new Error(`Backend error: ${backendResponse.status}`);
       }
+
+      const result = await backendResponse.json();
+      console.log(`[ANALYZE] Backend analysis successful: ${result.overall_score}/100`);
+      return NextResponse.json(result);
+    } catch (backendError) {
+      console.warn('[ANALYZE] Backend unavailable, using mock data:', backendError);
+      // Continue to mock data below
     }
 
-    // Parse request body for mock analysis
+    // Parse request body for mock analysis fallback
     const { imageBase64, projectType, settings } = await request.json();
 
     if (!imageBase64) {
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate mock analysis data (fallback)
+    // Generate mock analysis data (fallback when backend is down)
     const analysisData = {
       overallScore: Math.floor(Math.random() * 30) + 70, // 70-100
       status: ['APPROVED', 'REVISION_REQUIRED', 'REJECTED'][Math.floor(Math.random() * 3)],
