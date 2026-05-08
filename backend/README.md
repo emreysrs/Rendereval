@@ -141,12 +141,12 @@ Edit `.env` file:
 FLASK_PORT=5000
 FLASK_DEBUG=False
 
-# CORS (Frontend URLs)
-CORS_ORIGINS=http://localhost:3000
-
-# File Upload
-MAX_FILE_SIZE_MB=500
-ALLOWED_FORMATS=png,jpg,jpeg,bmp,tiff,exr
+# OpenRouter Vision
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_MODEL=Nemotron Nano 12B 2 VL
+OPENROUTER_API_URL=https://openrouter.ai/api/v1/chat/completions
+OPENROUTER_SITE_URL=http://localhost:5000
+OPENROUTER_SITE_NAME=RENDEREVAL
 ```
 
 ## 🐳 Docker Compose (Full Stack)
