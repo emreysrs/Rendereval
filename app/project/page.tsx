@@ -3,11 +3,13 @@
 import { useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 function ProjectContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const projectType = searchParams.get('type') || 'vfx';
+  const { t } = useLanguage();
 
   const [projectName, setProjectName] = useState('');
   const [sequence, setSequence] = useState('');
@@ -66,6 +68,11 @@ function ProjectContent() {
   };
 
   const handleContinue = () => {
+    if (!mainShot) {
+      alert("You cannot run analysis without uploading a photo.");
+      return;
+    }
+    
     // Store project details in sessionStorage
     sessionStorage.setItem('rendereval_project', JSON.stringify({
       projectName,
@@ -101,7 +108,7 @@ function ProjectContent() {
         flex: isMain ? 2 : 1,
         minHeight: '160px',
         border: dragTarget === zone
-          ? '2px solid #3b82f6'
+          ? '2px solid #4B8DBC'
           : isMain
             ? '2px dashed rgba(255, 255, 255, 0.3)'
             : '2px dashed rgba(255, 255, 255, 0.3)',
@@ -128,11 +135,11 @@ function ProjectContent() {
           <polyline points="17 8 12 3 7 8" />
           <line x1="12" y1="3" x2="12" y2="15" />
         </svg>
-        <span style={{ color: file ? '#22c55e' : isMain ? '#3b82f6' : '#6b7280', fontSize: '13px', fontWeight: 500, textAlign: 'center' }}>
+        <span style={{ color: file ? '#22c55e' : isMain ? '#4B8DBC' : '#6b7280', fontSize: '13px', fontWeight: 500, textAlign: 'center' }}>
           {file ? file.name : label}
         </span>
         {isMain && !file && (
-          <span style={{ color: '#4a4a60', fontSize: '11px' }}>Required</span>
+          <span style={{ color: '#4a4a60', fontSize: '11px' }}>{t('required')}</span>
         )}
       </div>
     </div>
@@ -144,15 +151,15 @@ function ProjectContent() {
       <div style={{ flex: 1, padding: '32px 40px', display: 'flex', flexDirection: 'column' }}>
         {/* Upload Zones */}
         <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-          <UploadZone label="Previous Shot" file={prevShot} setter={(f) => handleFileSet(f, setPrevShot)} zone="prev" />
-          <UploadZone label="Main Shot" file={mainShot} setter={(f) => handleFileSet(f, setMainShot, true)} zone="main" isMain preview={mainPreview} />
-          <UploadZone label="Next Shot" file={nextShot} setter={(f) => handleFileSet(f, setNextShot)} zone="next" />
+          <UploadZone label={t('previous_shot')} file={prevShot} setter={(f) => handleFileSet(f, setPrevShot)} zone="prev" />
+          <UploadZone label={t('main_shot')} file={mainShot} setter={(f) => handleFileSet(f, setMainShot, true)} zone="main" isMain preview={mainPreview} />
+          <UploadZone label={t('next_shot')} file={nextShot} setter={(f) => handleFileSet(f, setNextShot)} zone="next" />
         </div>
 
         {/* Embeddable Shot Settings */}
         <div
           style={{
-            border: '2px dashed #3a3a50',
+            border: '2px dashed #595F61',
             borderRadius: '12px',
             padding: '24px',
             background: '#1F1F1E',
@@ -164,7 +171,7 @@ function ProjectContent() {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            <span style={{ color: '#9ca3af', fontSize: '13px', fontWeight: 500 }}>Embeddable Shot Settings</span>
+            <span style={{ color: '#9ca3af', fontSize: '13px', fontWeight: 500 }}>{t('embeddable_settings')}</span>
           </div>
           <p style={{ color: '#6b7280', fontSize: '11px', textAlign: 'center' }}>
             Colorspace · Alpha and Proxy · M · 27
@@ -190,9 +197,9 @@ function ProjectContent() {
           </button>
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }} />
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3a3a50' }} />
-            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3a3a50' }} />
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#4B8DBC' }} />
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#595F61' }} />
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#595F61' }} />
           </div>
 
           <button
@@ -201,7 +208,7 @@ function ProjectContent() {
               padding: '10px 24px',
               borderRadius: '8px',
               border: 'none',
-              background: mainShot ? '#3b82f6' : '#2a2a3e',
+              background: mainShot ? '#4B8DBC' : '#3F403F',
               color: mainShot ? '#fff' : '#6b7280',
               fontSize: '13px',
               cursor: mainShot ? 'pointer' : 'not-allowed',
@@ -211,7 +218,7 @@ function ProjectContent() {
               gap: '6px',
             }}
           >
-            Start Analysis →
+            {t('start_analysis')} →
           </button>
         </div>
       </div>
@@ -222,22 +229,22 @@ function ProjectContent() {
           width: '280px',
           borderLeft: '1px solid rgba(255, 255, 255, 0.3)',
           padding: '24px',
-          background: '#393D3D',
+          background: '#2b2b2b',
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
         }}
       >
         <h3 style={{ color: '#9ca3af', fontSize: '11px', fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
-          Project Details
+          {t('project_setup')}
         </h3>
 
         <div>
-          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>Project Name *</label>
+          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('project_name')}</label>
           <input
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
-            placeholder="Enter project name"
+            placeholder={t('enter_project_name')}
             style={{
               width: '100%',
               padding: '8px 12px',
@@ -252,11 +259,11 @@ function ProjectContent() {
         </div>
 
         <div>
-          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>Sequence *</label>
+          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('sequence')}</label>
           <input
             value={sequence}
             onChange={(e) => setSequence(e.target.value)}
-            placeholder="E.g. INT_006"
+            placeholder={t('eg_sequence')}
             style={{
               width: '100%',
               padding: '8px 12px',
@@ -271,7 +278,7 @@ function ProjectContent() {
         </div>
 
         <div>
-          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>Total Frames *</label>
+          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('total_frames')}</label>
           <input
             value={totalFrames}
             onChange={(e) => setTotalFrames(e.target.value)}
@@ -291,7 +298,7 @@ function ProjectContent() {
         </div>
 
         <div>
-          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>Shot Description</label>
+          <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('shot_description')}</label>
           <textarea
             value={shotDescription}
             onChange={(e) => setShotDescription(e.target.value)}

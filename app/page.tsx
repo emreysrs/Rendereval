@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from './context/LanguageContext';
 
 export default function Home() {
   const router = useRouter();
-  const [selected, setSelected] = useState<'vfx' | 'animation' | null>(null);
+  const { t } = useLanguage();
+  const [projectType, setProjectType] = useState<'VFX' | 'ANIMATION' | null>(null);
 
   return (
     <div
@@ -22,7 +24,7 @@ export default function Home() {
       {/* Title */}
       <h1
         style={{
-          color: '#4ecdc4',
+          color: '#ffffff',
           fontSize: '32px',
           fontWeight: 700,
           letterSpacing: '6px',
@@ -34,112 +36,87 @@ export default function Home() {
       </h1>
 
       {/* Selection Cards */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', gap: '24px', marginBottom: '24px' }}>
         <button
-          onClick={() => setSelected('vfx')}
+          onClick={() => setProjectType('VFX')}
+          className="w-95 h-55 rounded-xl border-2 transition-all duration-200"
+          style={{
+            backgroundColor: projectType === 'VFX' ? '#4B8DBC' : '#3F403F',
+            borderColor: projectType === 'VFX' ? '#4B8DBC' : '#595F61',
+            boxShadow: projectType === 'VFX' ? 'inset 0 0 20px rgba(75, 141, 188, 0.3)' : 'none',
+          }}
           onMouseEnter={(e) => {
-            if (selected !== 'vfx') {
-              e.currentTarget.style.background = '#5B8BB8';
-              e.currentTarget.style.borderColor = '#5B8BB8';
+            if (projectType !== 'VFX') {
+              e.currentTarget.style.borderColor = '#4B8DBC';
+              e.currentTarget.style.boxShadow = 'inset 0 0 15px rgba(75, 141, 188, 0.2)';
             }
           }}
           onMouseLeave={(e) => {
-            if (selected !== 'vfx') {
-              e.currentTarget.style.background = '#1F1F1E';
-              e.currentTarget.style.borderColor = '#3a3a50';
+            if (projectType !== 'VFX') {
+              e.currentTarget.style.borderColor = '#595F61';
+              e.currentTarget.style.boxShadow = 'none';
             }
           }}
-          style={{
-            width: '220px',
-            height: '140px',
-            borderRadius: '12px',
-            border: selected === 'vfx' ? '2px solid #3b82f6' : '2px solid #3a3a50',
-            background: selected === 'vfx' ? '#3b82f6' : '#1F1F1E',
-            color: '#fff',
-            fontSize: '20px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            letterSpacing: '2px',
-          }}
         >
-          VFX
+          <div
+            className="text-center"
+            style={{
+              fontSize: '28px',
+              fontWeight: 'bold',
+              color: projectType === 'VFX' ? '#FFFFFF' : '#CCCECB',
+            }}
+          >
+            VFX
+          </div>
         </button>
+
         <button
-          onClick={() => setSelected('animation')}
+          onClick={() => setProjectType('ANIMATION')}
+          className="w-95 h-55 rounded-xl border-2 transition-all duration-200"
+          style={{
+            backgroundColor: projectType === 'ANIMATION' ? '#4B8DBC' : '#3F403F',
+            borderColor: projectType === 'ANIMATION' ? '#4B8DBC' : '#595F61',
+            boxShadow: projectType === 'ANIMATION' ? 'inset 0 0 20px rgba(75, 141, 188, 0.3)' : 'none',
+          }}
           onMouseEnter={(e) => {
-            if (selected !== 'animation') {
-              e.currentTarget.style.background = '#5B8BB8';
-              e.currentTarget.style.borderColor = '#5B8BB8';
+            if (projectType !== 'ANIMATION') {
+              e.currentTarget.style.borderColor = '#4B8DBC';
+              e.currentTarget.style.boxShadow = 'inset 0 0 15px rgba(75, 141, 188, 0.2)';
             }
           }}
           onMouseLeave={(e) => {
-            if (selected !== 'animation') {
-              e.currentTarget.style.background = '#1F1F1E';
-              e.currentTarget.style.borderColor = '#3a3a50';
+            if (projectType !== 'ANIMATION') {
+              e.currentTarget.style.borderColor = '#595F61';
+              e.currentTarget.style.boxShadow = 'none';
             }
           }}
-          style={{
-            width: '220px',
-            height: '140px',
-            borderRadius: '12px',
-            border: selected === 'animation' ? '2px solid #3b82f6' : '2px solid #3a3a50',
-            background: selected === 'animation' ? '#3b82f6' : '#1F1F1E',
-            color: '#fff',
-            fontSize: '20px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            letterSpacing: '2px',
-          }}
         >
-          ANIMATION
+          <div
+            className="text-center"
+            style={{
+              fontSize: '28px',
+              fontWeight: 'bold',
+              color: projectType === 'ANIMATION' ? '#FFFFFF' : '#CCCECB',
+            }}
+          >
+            ANIMATION
+          </div>
         </button>
       </div>
 
       {/* Subtitle */}
-      <p
-        style={{
-          color: '#6b7280',
-          fontSize: '12px',
-          marginBottom: '32px',
-          textAlign: 'center',
-        }}
-      >
-        AI-powered render evaluation for professional pipelines.
+      <p style={{ color: '#868686', fontSize: '14px', marginBottom: '32px' }}>
+        {t('description')}
       </p>
 
       {/* Continue Button */}
-      {selected && (
+      {projectType && (
         <button
-          onClick={() => router.push(`/project?type=${selected}`)}
-          style={{
-            padding: '10px 32px',
-            borderRadius: '8px',
-            border: '1px solid #3b82f6',
-            background: 'rgba(59, 130, 246, 0.15)',
-            color: '#9ca3af',
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            fontWeight: 500,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.3)';
-            e.currentTarget.style.color = '#fff';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(59, 130, 246, 0.15)';
-            e.currentTarget.style.color = '#9ca3af';
-          }}
+          onClick={() => router.push(`/project?type=${projectType.toLowerCase()}`)}
+          className="mt-12 px-8 py-3 rounded-xl bg-[#4B8DBC] text-white transition-opacity hover:opacity-90"
+          style={{ fontSize: '14px' }}
         >
-          Continue
+          {t('continue')}
         </button>
       )}
     </div>

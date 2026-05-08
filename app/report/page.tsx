@@ -107,7 +107,7 @@ function ReportContent() {
 
           {/* Annotated Summary */}
           <div>
-            <h3 style={{ color: '#3b82f6', fontSize: '12px', fontWeight: 600, marginBottom: '12px' }}>
+            <h3 style={{ color: '#2b2b2b', fontSize: '12px', fontWeight: 600, marginBottom: '12px' }}>
               Annotated Summary
             </h3>
             <div style={{ background: '#232336', border: '1px solid #3a3a50', borderRadius: '8px', overflow: 'hidden' }}>
@@ -173,7 +173,7 @@ function ReportContent() {
           </div>
 
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: '#3b82f6', color: '#fff', fontSize: '12px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <button style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: '#2b2b2b', color: '#fff', fontSize: '12px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
               Save Report
             </button>

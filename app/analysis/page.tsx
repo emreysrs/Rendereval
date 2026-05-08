@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const tabs = [
-  'Required Artists',
+  'Required AOVs',
   'Time of Day',
   'Location',
   'Required Mood',
@@ -13,11 +14,12 @@ const tabs = [
   'Render TimeFrame',
 ];
 
-const artists = ['Roto', 'Offices', 'Telecine', 'Shadows', 'Cleanup', 'Motion Tracker'];
+const artists = ['Beauty', 'Diffuse', 'Specular', 'Shadow', 'Depth', 'Motion Vector'];
 
 function AnalysisContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useLanguage();
   const projectType = searchParams.get('type') || 'vfx';
 
   const [activeTab, setActiveTab] = useState(0);
@@ -28,6 +30,7 @@ function AnalysisContent() {
   const [startFrame, setStartFrame] = useState('1');
   const [endFrame, setEndFrame] = useState('120');
   const [renderDeadline, setRenderDeadline] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const toggleArtist = (a: string) => {
     setSelectedArtists((prev) =>
@@ -51,7 +54,8 @@ function AnalysisContent() {
                   cursor: 'pointer',
                   padding: '8px 12px',
                   borderRadius: '8px',
-                  background: selectedArtists.includes(a) ? 'rgba(59,130,246,0.1)' : 'transparent',
+                  background: selectedArtists.includes(a) ? 'rgba(75,141,188,0.1)' : 'transparent',
+                  borderBottom: selectedArtists.includes(a) ? '2px solid #4B8DBC' : '2px solid transparent',
                   transition: 'background 0.15s',
                 }}
               >
@@ -61,9 +65,9 @@ function AnalysisContent() {
                     height: '18px',
                     borderRadius: '4px',
                     border: selectedArtists.includes(a)
-                      ? '2px solid #3b82f6'
-                      : '2px solid #4a4a60',
-                    background: selectedArtists.includes(a) ? '#3b82f6' : 'transparent',
+                      ? '2px solid #4B8DBC'
+                      : '2px solid rgba(255, 255, 255, 0.3)',
+                    background: selectedArtists.includes(a) ? '#4B8DBC' : 'transparent',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -76,7 +80,7 @@ function AnalysisContent() {
                     </svg>
                   )}
                 </div>
-                <span style={{ color: '#e0e0e0', fontSize: '14px' }}>{a}</span>
+                <span style={{ color: '#ffffff', fontSize: '14px' }}>{a}</span>
               </div>
             ))}
           </div>
@@ -92,8 +96,8 @@ function AnalysisContent() {
                 style={{
                   padding: '12px 32px',
                   borderRadius: '8px',
-                  border: timeOfDay === t ? '2px solid #3b82f6' : '2px solid #3a3a50',
-                  background: timeOfDay === t ? '#3b82f6' : '#2a2a3e',
+                  border: timeOfDay === t ? '2px solid #4B8DBC' : '2px solid rgba(255, 255, 255, 0.3)',
+                  background: timeOfDay === t ? '#4B8DBC' : '#3F403F',
                   color: '#fff',
                   fontSize: '14px',
                   fontWeight: 600,
@@ -118,8 +122,8 @@ function AnalysisContent() {
                 style={{
                   padding: '12px 32px',
                   borderRadius: '8px',
-                  border: location === l ? '2px solid #3b82f6' : '2px solid #3a3a50',
-                  background: location === l ? '#3b82f6' : '#2a2a3e',
+                  border: location === l ? '2px solid #4B8DBC' : '2px solid rgba(255, 255, 255, 0.3)',
+                  background: location === l ? '#4B8DBC' : '#3F403F',
                   color: '#fff',
                   fontSize: '14px',
                   fontWeight: 600,
@@ -147,8 +151,8 @@ function AnalysisContent() {
                 maxWidth: '500px',
                 padding: '12px 16px',
                 borderRadius: '8px',
-                border: '1px solid #3a3a50',
-                background: '#232336',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: '#3F403F',
                 color: '#e0e0e0',
                 fontSize: '13px',
                 outline: 'none',
@@ -161,9 +165,9 @@ function AnalysisContent() {
                 width: '100%',
                 maxWidth: '500px',
                 height: '80px',
-                border: '2px dashed #3a3a50',
+                border: '2px dashed rgba(255, 255, 255, 0.3)',
                 borderRadius: '8px',
-                background: '#232336',
+                background: '#1F1F1E',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -183,7 +187,7 @@ function AnalysisContent() {
         return (
           <div style={{ display: 'flex', gap: '24px', padding: '8px 0' }}>
             <div>
-              <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>Start Frame</label>
+              <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('start_frame')}</label>
               <input
                 type="number"
                 value={startFrame}
@@ -192,8 +196,8 @@ function AnalysisContent() {
                   width: '160px',
                   padding: '8px 12px',
                   borderRadius: '6px',
-                  border: '1px solid #3a3a50',
-                  background: '#232336',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  background: '#3F403F',
                   color: '#e0e0e0',
                   fontSize: '13px',
                   outline: 'none',
@@ -201,7 +205,7 @@ function AnalysisContent() {
               />
             </div>
             <div>
-              <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>End Frame</label>
+              <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('end_frame')}</label>
               <input
                 type="number"
                 value={endFrame}
@@ -210,8 +214,8 @@ function AnalysisContent() {
                   width: '160px',
                   padding: '8px 12px',
                   borderRadius: '6px',
-                  border: '1px solid #3a3a50',
-                  background: '#232336',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  background: '#3F403F',
                   color: '#e0e0e0',
                   fontSize: '13px',
                   outline: 'none',
@@ -224,7 +228,7 @@ function AnalysisContent() {
       case 5: // Render TimeFrame
         return (
           <div style={{ padding: '8px 0' }}>
-            <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>Render Time Limit</label>
+            <label style={{ color: '#6b7280', fontSize: '11px', display: 'block', marginBottom: '6px' }}>{t('render_time_limit')}</label>
             <input
               type="text"
               value={renderDeadline}
@@ -234,8 +238,8 @@ function AnalysisContent() {
                 width: '200px',
                 padding: '8px 12px',
                 borderRadius: '6px',
-                border: '1px solid #3a3a50',
-                background: '#232336',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                background: '#3F403F',
                 color: '#e0e0e0',
                 fontSize: '13px',
                 outline: 'none',
@@ -259,7 +263,7 @@ function AnalysisContent() {
           gap: '0',
           borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
           padding: '0 24px',
-          background: '#1F1F1E',
+          background: '#2b2b2b',
           overflowX: 'auto',
         }}
       >
@@ -271,10 +275,10 @@ function AnalysisContent() {
               padding: '14px 18px',
               fontSize: '12px',
               fontWeight: activeTab === i ? 600 : 400,
-              color: activeTab === i ? '#3b82f6' : '#6b7280',
+              color: activeTab === i ? '#ffffff' : '#ffffff',
               background: 'none',
               border: 'none',
-              borderBottom: activeTab === i ? '2px solid #3b82f6' : '2px solid transparent',
+              borderBottom: activeTab === i ? '2px solid #4B8DBC' : '2px solid transparent',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
               transition: 'all 0.15s',
@@ -290,8 +294,8 @@ function AnalysisContent() {
             style={{
               padding: '6px 12px',
               borderRadius: '6px',
-              border: '1px solid #3a3a50',
-              background: '#232336',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              background: '#3F403F',
               color: '#9ca3af',
               fontSize: '11px',
               fontWeight: 500,
@@ -314,7 +318,7 @@ function AnalysisContent() {
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '16px 32px',
-          borderTop: '1px solid #2a2a3e',
+          borderTop: '1px solid rgba(255, 255, 255, 0.3)',
         }}
       >
         <button
@@ -322,7 +326,7 @@ function AnalysisContent() {
           style={{
             padding: '10px 24px',
             borderRadius: '8px',
-            border: '1px solid #3a3a50',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
             background: 'transparent',
             color: '#9ca3af',
             fontSize: '13px',
@@ -334,14 +338,16 @@ function AnalysisContent() {
         </button>
 
         <div style={{ display: 'flex', gap: '8px' }}>
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }} />
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3b82f6' }} />
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#3a3a50' }} />
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2b2b2b' }} />
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2b2b2b' }} />
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'rgba(255, 255, 255, 0.3)' }} />
         </div>
 
         <button
-          onClick={() => {
-            sessionStorage.setItem('rendereval_settings', JSON.stringify({
+          disabled={isAnalyzing}
+          onClick={async () => {
+            setIsAnalyzing(true);
+            const settings = {
               artists: selectedArtists,
               timeOfDay,
               location,
@@ -349,21 +355,58 @@ function AnalysisContent() {
               startFrame,
               endFrame,
               renderDeadline,
-            }));
-            router.push(`/results?type=${projectType}`);
+            };
+            sessionStorage.setItem('rendereval_settings', JSON.stringify(settings));
+
+            try {
+              const imageBase64 = sessionStorage.getItem('rendereval_image');
+              if (imageBase64) {
+                const response = await fetch('/api/analyze', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    imageBase64,
+                    projectType,
+                    settings
+                  }),
+                });
+
+                if (response.ok) {
+                  const data = await response.json();
+                  sessionStorage.setItem('rendereval_results', JSON.stringify(data));
+                }
+              }
+            } catch (error) {
+              console.error('Analysis failed:', error);
+            } finally {
+              setIsAnalyzing(false);
+              router.push(`/results?type=${projectType}`);
+            }
           }}
           style={{
             padding: '10px 24px',
             borderRadius: '8px',
             border: 'none',
-            background: '#3b82f6',
+            background: isAnalyzing ? '#4a4a60' : '#2b2b2b',
             color: '#fff',
             fontSize: '13px',
-            cursor: 'pointer',
+            cursor: isAnalyzing ? 'not-allowed' : 'pointer',
             fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
           }}
         >
-          RUN ANALYSIS
+          {isAnalyzing ? (
+            <>
+              <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+              ANALYZING...
+            </>
+          ) : (
+            'RUN ANALYSIS'
+          )}
         </button>
       </div>
     </div>

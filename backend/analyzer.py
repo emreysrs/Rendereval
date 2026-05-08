@@ -124,6 +124,21 @@ class RenderAnalyzer:
                 }
             }
             
+            def _convert_numpy(obj):
+                if isinstance(obj, (np.int_, np.intc, np.intp, np.int8,
+                                    np.int16, np.int32, np.int64, np.uint8,
+                                    np.uint16, np.uint32, np.uint64)):
+                    return int(obj)
+                elif isinstance(obj, (np.float_, np.float16, np.float32, np.float64)):
+                    return float(obj)
+                elif isinstance(obj, dict):
+                    return {k: _convert_numpy(v) for k, v in obj.items()}
+                elif isinstance(obj, (list, tuple)):
+                    return [_convert_numpy(v) for v in obj]
+                return obj
+            
+            result = _convert_numpy(result)
+            
             self.analysis_history.append(result)
             print(f"[ANALYSIS] Complete - Score: {overall_score}/100 - Status: {result['status']}")
             return result
@@ -340,6 +355,14 @@ class RenderAnalyzer:
     def _analyze_compression(self, image: np.ndarray) -> Tuple[int, Dict]:
         """Detect compression artifacts"""
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        
+        # Ensure dimensions are even for DCT as OpenCV DCT doesn't support odd sizes
+        h, w = gray.shape
+        if h % 2 != 0 or w % 2 != 0:
+            new_w = w if w % 2 == 0 else w - 1
+            new_h = h if h % 2 == 0 else h - 1
+            gray = cv2.resize(gray, (new_w, new_h))
+            
         dct = cv2.dct(np.float32(gray) / 255)
         dct_energy = np.abs(dct)
         
